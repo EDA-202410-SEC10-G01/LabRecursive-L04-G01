@@ -55,7 +55,6 @@ def printMenu():
     print("4- Libros por género")
     print("5- Ordenar los libros por ISBN")
     print("6- Desordenar los libros por ISBN")
-    # TODO agregar opciones al menu (parte 2)
     print("7- Buscar un libro por ISBN")
     print("8- Calcular el rating promedio de libros")
     print("9- Filtrar el catálogo de libros por un rango de califaciones")
@@ -198,8 +197,7 @@ def menu_cycle():
             print("Para", size, "elementos, tiempo:", str(delta_time), "[ms]")
             printSortResults(shuffled_list)
 
-        elif int(inputs) == 7:
-            # TODO modificar opcion 7 del menu (parte 2)   
+        elif int(inputs) == 7: 
             isbn = input("Ingrese el ISBN del libro a buscar: ")
             isbn = int(isbn)
             result = controller.findBookByISBN(control,
@@ -214,7 +212,6 @@ def menu_cycle():
             printSearchResults(book) 
 
         elif int(inputs) == 8:
-            # TODO modificar opcion 8 del menu (parte 2)
             result = controller.getBooksAverageRating(control, recursive=rec)
             delta_time = f"{result[0]:.3f}"
             average = result[1]
@@ -226,7 +223,6 @@ def menu_cycle():
             print("El rating promedio es:", average)
 
         elif int(inputs) == 9:
-            # TODO modificar opcion 9 del menu (parte 2)
             print("Filtra los libros con un rating entre dos valores")
             lower = float(input("Ingrese el rating mínimo: "))
             upper = float(input("Ingrese el rating máximo: "))
@@ -243,7 +239,6 @@ def menu_cycle():
             printSortResults(filtered_list)
 
         elif int(inputs) == 10:
-            # TODO modificar opcion 10 del menu (parte 2)
             rec = input("Usar algoritmos recursivos? (S/N): ")
             if rec in bool_lt_opt:
                 rec = True
