@@ -438,10 +438,15 @@ def filterBooksByRating(catalog, low, high):
         ADT List: listado de libros que cumplen con el rango de rating
     """
     # TODO implementar la mascara recursiva para filtrar libros (parte 2)
-    pass
+    
+    #Declarar variables iniciales
+    get_list = catalog["books"] #obtener la lista de libros del catalog que contiene la informacion de los average_rating
+    adt_list = lt.newList("ARRAY_LIST") #crear la lista donde se van a agregar aquellos titulos dentro del rango de rating
+    
+    return recursiveFilterBooksByRating(get_list, adt_list, low, high, 1)
 
 
-def recursiveFilterBooksByRating(books, answer, low, high, idx=1):
+def recursiveFilterBooksByRating(get_list, adt_list, low, high, idx=1):
     """recursiveFilterBooksByRating filtra recursivamente los libros por
     rating, utiliza la llave "average_rating" y devuelve una lista de libros
     que se pasan inicialmente vacia por parametro y por defecto inicia el
@@ -457,7 +462,24 @@ def recursiveFilterBooksByRating(books, answer, low, high, idx=1):
         ADT List: lista de libros filtrados
     """
     # TODO implementar recursivamente el filtrado de libros (parte 2)
-    pass
+    
+    #declaracion de variables iniciales
+    num_libros = lt.size(get_list) #obtiene la cantidad de libros que se encuentra en la lista
+    if idx == num_libros: #se evalua el caso unico en el que el indice inicial(idx) = num_libros(la cantidad de libros totales)
+        ultima_pos_libro = lt.getElement(get_list, idx) #obtiene los datos del libro que se encuentra en la posicion idx (ultima posicion en este caso)
+        if low <= float(ultima_pos_libro["average_raiting"]) and high >= float(ultima_pos_libro["average_raiting"]): #se evalua si el rating del libro entra dentro del rango establecido
+            lt.addLast(adt_list, ultima_pos_libro) #se agrega el libro en la ultima posicion de la lista creada
+            return adt_list
+        else: #en el caso en el que el libro no esta dentro del rango establecido retorna la lista sin cambios
+            return adt_list
+    else: #evalua cualquier otro caso donde el indica inicial no es la ultima posicion de forma general
+        #redunda el algoritmo usado en el primer caso, pero retornando de forma recursiva los libros por rating
+        primera_pos_libro = lt.getElement(get_list, idx)
+        if low <= float(primera_pos_libro["average_rating"]) and high >= float(primera_pos_libro["average_rating"]):
+            lt.addLast(adt_list, primera_pos_libro)
+            return recursiveFilterBooksByRating(get_list, adt_list, low, high, idx=1)
+        else:
+            return recursiveFilterBooksByRating(get_list, adt_list, low, high, idx=1)
 
 
 def iterativeFilterBooksByRating(catalog, low, high):
@@ -475,4 +497,12 @@ def iterativeFilterBooksByRating(catalog, low, high):
         defecto SINGLE_LINKED
     """
     # TODO implementar iterativamente el filtrado de libros (parte 2)
-    pass
+    
+    #declaracion de variables iniciales
+    adt_list = lt.newList("ARRAY_LIST") #se crea una lista vacia tipo ARRAY_LIST
+    get_list = catalog["books"] #se obtiene la lista de libros del catalog con la informacion de average_rating
+    list_iterator = lt.iterator(get_list) #se obtiene un iterador para acceder a los elementos de la lista get_list
+    for libro in list_iterator: #la variable "libro" toma el valor de cada elemento que iterator reconoce 
+        if low <= float(libro["average_rating"]) and high >= float(libro["average_rating"]): #se evalua si "libro" se encuentra dentro del rango establecido
+            lt.addLast(adt_list, libro) #siendo "libro" parte del rango establecido, se agrega a la lista adt_list
+    return adt_list
