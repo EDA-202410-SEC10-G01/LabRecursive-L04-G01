@@ -293,9 +293,15 @@ def searchBookByISBN(catalog, bookisbn):
         book: el diccionario que cumple con el ISBN dentro de la
         lista de libros
     """
+    books=catalog["books"]
+    bajo = 1
+    tamaño = lt.size(books)
     # TODO implementar la mascara de la busqueda recursiva (parte 2)
-
-    pass
+    buscarISBN = recursiveSearchBookByISBN(books, bookisbn, bajo, tamaño)
+    if buscarISBN == -1:
+        return None
+    else:
+        return lt.getElement(books, buscarISBN)
 
 
 def recursiveSearchBookByISBN(books, bookisbn, low, high):
@@ -313,8 +319,17 @@ def recursiveSearchBookByISBN(books, bookisbn, low, high):
         int: indice del libro en la lista, -1 si no lo encuentra
     """
     # TODO implementar recursivamente binary search (parte 2)
-    pass
-
+    if high >= low:
+        intermedio = (high+low)//2
+        if compareISBN({"isbn13":bookisbn}, lt.getElement(books, intermedio)):
+            return recursiveSearchBookByISBN(books, bookisbn, low, intermedio-1)
+        elif lt.getElement(books, intermedio)["isbn13"] == bookisbn:
+            return intermedio
+        else:
+            return recursiveSearchBookByISBN(books, bookisbn, intermedio+1, high)
+    else:
+        return -1    
+        
 
 def iterativeSearchBookByISBN(catalog, bookid):
     """iterativeSearchBookByISBN ejecuta iterativamente la busqueda binaria el
@@ -330,7 +345,21 @@ def iterativeSearchBookByISBN(catalog, bookid):
         lista de libros
     """
     # TODO implementar iterativamente del binary search (parte 2)
-    pass
+    books = catalog["books"]
+    bajo = 1
+    tamaño = lt.size(books)
+    mitad = 0
+    book = {"isbn13": bookid}
+    while bajo <= tamaño:
+        mitad = (tamaño+bajo)//2
+        if compareISBN(lt.getElement(books, mitad), book):
+            bajo = mitad-1
+        elif compareISBN(book, lt.getElement(books, mitad)):
+            tamaño = mitad+1
+        else:
+            return lt.getElement(books, mitad)
+    return None
+
 
 
 # funciones para calcular estadisticas
