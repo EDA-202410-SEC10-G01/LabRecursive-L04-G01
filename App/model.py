@@ -294,6 +294,7 @@ def searchBookByISBN(catalog, bookisbn):
         lista de libros
     """
     # TODO implementar la mascara de la busqueda recursiva (parte 2)
+
     pass
 
 
@@ -345,25 +346,29 @@ def AvgBooksRatings(catalog):
     Returns:
         float: promedio de ratings de los libros en el catalogo
     """
-    # TODO implementar la mascara recursiva del calculo del promedio (parte 2)
-    pass
+    def recursiveAvgBooksRating(books, idx, n):
+        """recursiveAvgBooksRating ejecuta recursivamente el promedio de ratings
+        teniendo en cuenta el indice de inicio y el total de libros a procesar por
+        la llave "average_rating"
 
+        Args:
+            books (ADT List): lista de libros en el catalogo
+            idx (int): indice de inicio de la lista
+            n (int): total de libros a procesar
 
-def recursiveAvgBooksRating(books, idx, n):
-    """recursiveAvgBooksRating ejecuta recursivamente el promedio de ratings
-    teniendo en cuenta el indice de inicio y el total de libros a procesar por
-    la llave "average_rating"
-
-    Args:
-        books (ADT List): lista de libros en el catalogo
-        idx (int): indice de inicio de la lista
-        n (int): total de libros a procesar
-
-    Returns:
-        float: promedio de ratings de los libros en la lista
-    """
-    # TODO implementar recursivamente el calculo del promedio (parte 2)
-    pass
+        Returns:
+            float: promedio de ratings de los libros en la lista
+        """
+        if n == 0:
+            return 0.0
+        rating = books[idx]["average_rating"]
+        if n == 1:
+            return rating
+        restos = recursiveFilterBooksByRating(books, idx+1, n-1)
+        return (rating + restos * (n-1))/n
+    books = list(catalog.values())
+    recursive = recursiveAvgBooksRating(books, 0, len(books))
+    return recursive
 
 
 def iterativeAvgBooksRating(catalog):
@@ -377,8 +382,17 @@ def iterativeAvgBooksRating(catalog):
     Returns:
         float: promedio de ratings de los libros en la lista
     """
-    # TODO implementar iterativamente el calculo del promedio (parte 2)
-    pass
+    total_rating = 0
+    cantidad_libros = 0
+    rating = 0.0
+    for i in catalog.values():
+        if "average_rating" in i:
+            total_rating += i["avarage_rating"]
+            cantidad_libros += 1
+    if cantidad_libros == 0:
+        return 0.0
+    rating = total_rating / cantidad_libros
+    return rating
 
 
 def filterBooksByRating(catalog, low, high):
